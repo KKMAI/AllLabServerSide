@@ -1,0 +1,4 @@
+ข้อดีของ form ใน django
+1. validate ให้เลยตาม field ที่กำหนด (เป็นการ validate ที่ backend)
+2. แปลง datatype ตาม field ที่กำหนด
+3. render input tag ด้วย {{form}}

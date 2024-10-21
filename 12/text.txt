@@ -1,0 +1,50 @@
+dectorator:@login_required เอาไว้แยกการ  log in ของ method ใน class ได้
+ส่วน LoginRequiredMixin ในสำหรับ class base View 
+
+form = UserCreationForm(request.POST)  
+        if form.is_valid():  
+            form.save()  # ได้ object user
+
+ form = PasswordChangeForm(user=request.user, data=request.POST)
+ ข้างในมี old_password , new_password1, new_password2
+
+
+ // User + Group
+myuser.groups.set([group_list])
+myuser.groups.add(group, group, ...)
+myuser.groups.remove(group, group, ...)
+myuser.groups.clear()
+// User + Permission
+
+perm1 = Permission.objects.get(code_name="add_emplooyee") #get permission
+
+myuser.user_permissions.set([permission_list])
+myuser.user_permissions.add(permission, permission, ...)
+myuser.user_permissions.remove(permission, permission, ...)
+myuser.user_permissions.clear()
+// Group + Permission
+
+mygroup.permissions.add(perm1, perm2) ## get object group before then add permission in manyTomany
+
+การอ้างอิงถึงสิทธิ์ใน Django จะเป็นรูปแบบ <app label(name)>.<permission codename> ex. bookings.add_bookinng
+add: user.has_perm('employee.add_employee') #check that do you have this permission 
+check in database : permission code_name >> content_type >> 
+
+change: user.has_perm('employee.change_employee')
+delete: user.has_perm('employee.delete_employee')
+view: user.has_perm('employee.view_employee')
+
+
+
+@login_required
+def publish_article(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    if request.user.has_perm('app_name.can_publish'): ##app_name of object article
+        article.published = True
+        article.save()
+        return redirect('article_detail', article_id=article.id)
+    else:
+        return HttpResponseForbidden("You do not have permission to publish this article.")
+
+
+permission_required = ["bookings.view_booking"] ##this is list you can add more than one

@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% load humanize %}
+
+{% block title %}Employee{% endblock %}
+
+{% block head %}
+<h1>Employee</h1>
+<div class>
+    <h1>Total {{employee_list.count }} People</h1>
+</div>
+{% endblock %}
+
+{% block content%}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Full Name</th>
+            <th>Gender</th>
+            <th>Birth Date</th>
+            <th>Hire Date</th>
+            <th>Salary</th>
+            <th>Department</th>
+            <th>Position</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for employee in employee_list|dictsort:"hire_date" %}
+        <tr>
+            {% if forloop.first or forloop.last %}
+            <tr style="color: #ff0000;">
+            {% else %}
+            <tr>
+            {% endif %}
+                <td>{{employee.id}}</td>
+                <td>{{employee.get_full_name}}</td>
+
+                <td>
+                    {% if employee.gender == "M" %}
+                        Male
+                    {% elif employee.gender == "F" %}
+                        Female
+                    {% else %}
+                        Other
+                    {% endif %}
+                </td>
+                <td>{{employee.birth_date|date:"d/m/Y"}}</td>
+                <td>{{employee.hire_date|date:"d/m/Y"}}</td>
+                <td>{{employee.salary|intcomma}}</td>
+                <td>{{employee.position.department.name}}</td>
+                <td>{{employee.position.name}}</td>
+            </tr>
+        </tr>
+        {% empty %}
+        <h2>Sorry, no employee in this list.</h2>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,58 @@
+path = endpoint of API
+RESTFUL แนวทางในการออกแบบ API >> path, endpoint, response เพื่อให้ตรงตาม concept ของ RESTFUL
+PARTNER API >> มี token or user password
+METHOD Atttach wihtin HEADER
+RESTFUL design for HTTP
+
+GET เรียกดูข้อมูล
+POST เพิ่ม
+PUT แก้ไข
+PATCH แก้บางส่วน
+
+
+HOW TO DESIGN ENDPOINT
+resource >> resource ที่เราสนใจ so in path should have
+:booking
+- GET : /bookings/ : getlist
+        /bookings/{id}/ : specific id
+- POST : /bookings/ : create
+- PUT : /bookings/{id}/ : update specific id
+- DELETE : /bookings/{id}/ : delete specific id
+
+## HTTP response status code ออก FINAL
+400  send data/ request wrong (maybe wrong format)
+
+Django Framework ปั้น error ให้
+
+pygments is libary for snippet
+
+serializers.StringRelatedField บอกว่าตอน serialize ให้ไปเรียกใช้ __str__ method
+
+serializers.PrimaryKeyRelatedField id default
+
+__________________________________________________________
+
+1. Basic Authentication 
+   ไม่ login เพราะส่ง user password ไปทุก request
+
+2. token
+    Client keep token that ได้รับ after Authen and attach every request it send
+
+views.obtain_auth_toke: built in that receive user-password to generate token 
+Token Generte ได้ 3 วิธี
+1. From django admin
+2. URL POST เพื่อขอ Token
+3. Command: python manage.py drf_create_token <username>
+
+JWT มักจะแนบ permission ด้วย bc. permission is in back so we dont have to frequenty request api
+
+JWT
+send username password for get token ได้มา 2 token access(อายุสั้น) referesh(อายุยาว)
+        path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+
+ใช้ในการขอ Token access ใหม่ โดยใช้ token refresh เพราะ access token ใช้ยิง request บ่อยเสี่ยงหลุด
+        path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+ถ้า refresh หมดก็ให้ user login ใหม่
+
+ต้อง setting ให้ชี้ไปที่ serializer ตัวใหม่ของเราด้วย กรณีต้องการเพิ่มข้อมูลที่แนบไป

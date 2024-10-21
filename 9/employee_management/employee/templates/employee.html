@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+{% load humanize %}
+
+{% block title %}Employee{% endblock %}
+
+
+{% block head%}
+    <h1>Employee</h1>
+    <div class>
+        <h1>Total {{employees|length}} People</h1>
+    </div>
+{% endblock %}
+
+{% block content%}
+<div>
+    <br>
+    <!-- กำหนด path ไปยังหน้า form เพิ่มพนักงาน -->
+    <a href="{% url 'employee_form' %}"><button class="newemp">New Employee</button></a>
+  </div>
+  
+<table>
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Genger</th>
+            <th>Birth Date</th>
+            <th>Hire Date</th>
+            <th>Salary</th>
+            <th>Department</th>
+            <th>Position</th>
+            <th>Location</th>
+            <th>Province</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for employee in employees|dictsortreversed:"hire_date"%}
+        <tr>
+            <!-- employee id -->
+            <!-- ชื่อ นามสกุล -->
+            <td>{{employee.first_name}} {{employee.last_name}}</td>
+            <!-- เพศ -->
+            <td>{% if employee.gender == 'M'%} Male 
+                {% elif employee.gender == 'F'%} Female
+                {%else%} Other
+                {% endif %}</td>
+            <!-- วันเกิด -->
+            <td>{{employee.birth_date|date:"d/m/Y"}}</td>
+            <!-- วันเริ่มงาน -->
+            <td>{{employee.hire_date|date:"d/m/Y"}}</td>
+            <!-- เงินเดือน -->
+            <td>{{employee.salary|intcomma}}</td>
+            <!-- แผนก -->
+            <td>{{employee.position.department.name}}</td>
+
+            <td>{{employee.position.name}}</td>
+
+            <td>{{employee.employeeaddress.location}}</td>
+
+            <td>{{employee.employeeaddress.province}}</td>
+        </tr>
+        {% empty %}
+        <tr>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %} 

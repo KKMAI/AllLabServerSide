@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}Project{% endblock %}
+
+{% block head %}<h1>Project</h1>{% endblock %}
+
+{% block content %}
+<div class="itemGroup">
+    {% for project in project_list %}
+    <div class="item">
+
+        <div>{{project.id}}.{{project.name}}</div>
+
+        <div>{{project.start_date}} - {{project.due_date}}</div>
+
+        <div class="action">
+
+            <a href="{% url 'project_detail2' project.id %}" class="edit btn">แก้ไข</a>
+
+            <button type="submit" onclick="deleteProject({{project.id}}, '{{csrf_token}}')" class="delete">Delete</button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block script %}{% static 'project.js' %}{% endblock %}
